@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  reverse-proxy:
+    extends:
+      file: common.yml
+      service: reverse-proxy
+  orthanc:
+    extends:
+      file: common.yml
+      service: orthanc
+    depends_on: [reverse-proxy]
+  ohif:
+    extends:
+      file: common.yml
+      service: ohif
+    depends_on: [reverse-proxy, orthanc]
+  monailabel:
+    extends:
+      file: common.yml
+      service: monailabel
+    depends_on: [reverse-proxy, orthanc]
+secrets:
+  orthanc.json:
+    file: orthanc/orthanc.json

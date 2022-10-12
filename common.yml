@@ -1,0 +1,60 @@
+version: "3.9"
+services:
+  reverse-proxy:
+    build:
+      context: nginx
+    ports:
+      - ${NGINX_LISTEN_PORT}:${NGINX_LISTEN_PORT}
+    restart: unless-stopped
+    env_file:
+      - .env
+  ohif:
+    build:
+      context: ohif
+    ports:
+      - 3000:80
+    restart: unless-stopped
+    env_file:
+      - .env
+  orthanc:
+    build:
+      context: orthanc
+    command: /run/secrets/  # Path to the configuration files (stored as secrets)
+    ports:
+      - 4242:4242
+      - 8042:8042
+    secrets:
+      - orthanc.json
+    restart: unless-stopped
+    environment:
+      - ORTHANC_NAME=${ORTHANC_NAME}
+      - USERNAME=${USERNAME}
+      - PW=${PW}
+    volumes:
+      - ${LOCAL_WORKSPACE}/db-index/:/var/lib/orthanc/db-index  #cannot be saved to network mount
+      - type: bind
+        source: ${IMAGE_MOUNT}/
+        target: /var/lib/orthanc/db
+  monailabel:
+    build:
+      context: monailabel
+    command: >
+      monailabel start_server 
+      --app /app/radiology 
+      --studies ${SERVER} 
+      --conf models segmentation 
+      --conf use_pretrained_model false 
+      --conf skip_scoring false 
+      --conf skip_strategies false 
+      --conf epistemic_enabled true
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+    environment:
+      - http_proxy=  # need to be unset for docker to docker communication
+      - MONAI_LABEL_DICOMWEB_USERNAME=${USERNAME}
+      - MONAI_LABEL_DICOMWEB_PASSWORD=${PW}
+      - MONAI_LABEL_DICOMWEB_SEARCH_FILTER=${SEARCH_FILTER}
+      - MONAI_LABEL_DICOMWEB_READ_TIMEOUT=60.0
+    volumes:
+      - ${LOCAL_WORKSPACE}/model/:/app/radiology/model/  # store models

@@ -9,5 +9,8 @@ server {
 
     location /orthanc {
         proxy_pass http://orthanc/;
+        proxy_set_header HOST $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        rewrite /orthanc(.*) $1 break;
     }
 }

@@ -9,11 +9,6 @@ services:
       file: common.yml
       service: orthanc
     depends_on: [reverse-proxy]
-  ohif:
-    extends:
-      file: common.yml
-      service: ohif
-    depends_on: [reverse-proxy, orthanc]
   monailabel:
     extends:
       file: common.yml

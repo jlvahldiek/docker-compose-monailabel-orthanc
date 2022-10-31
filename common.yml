@@ -8,14 +8,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-  ohif:
-    build:
-      context: ohif
-    ports:
-      - 3000:80
-    restart: unless-stopped
-    env_file:
-      - .env
   orthanc:
     build:
       context: orthanc
@@ -32,9 +24,7 @@ services:
       - PW=${PW}
     volumes:
       - ${LOCAL_WORKSPACE}/db-index/:/var/lib/orthanc/db-index  #cannot be saved to network mount
-      - type: bind
-        source: ${IMAGE_MOUNT}/
-        target: /var/lib/orthanc/db
+      - ${IMAGE_MOUNT}/db-index/:/var/lib/orthanc/db
   monailabel:
     build:
       context: monailabel

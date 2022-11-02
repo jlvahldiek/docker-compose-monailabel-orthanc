@@ -1,4 +1,4 @@
-# Tutorial for setting up MONAILabel with Orthanc and OHIF
+# Setting up MONAILabel with Orthanc and OHIF
 ## Principles
 - uses a DICOM image storage (Orthanc) for MONAILabel tasks
   - advantage over file based storage: no conversion needed (i.e. to Niftis), original DICOM files can be used directly without any manipulation/wrangling

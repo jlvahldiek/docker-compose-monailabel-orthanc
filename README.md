@@ -47,6 +47,4 @@ First of all populate Orthanc with DICOM images. Make sure that you import DICOM
 
 As an alternative specify paths to an existing Orthanc database: `$IMAGE_MOUNT` should point to Orthanc's data folder and `$LOCAL_WORKSPACE/db-index` should point to Orthanc's index folder.
 
-Put pre-existing models into `$LOCAL_WORKSPACE/anatomy-model`. This is also the place where new models will be saved.
-
 Use 3D Slicer's MONAILabel plugin to segment images and to train new models.

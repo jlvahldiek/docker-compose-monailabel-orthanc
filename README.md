@@ -33,7 +33,7 @@ docker-compose up
 ```
 - if no GPU available use
 ```bash
-docker-compose -f docker-compose-cpu.yml up 
+docker-compose -f docker-compose.cpu.yml up
 ```
 - Orthanc will be availabel via Web `http://$SERVICE_HOST:8042` or via DICOM QR `$SERVICE_HOST:4242`
   - populate Orthanc with images via Web app or using [batch upload](https://hg.orthanc-server.com/orthanc/file/Orthanc-1.11.1/OrthancServer/Resources/Samples/ImportDicomFiles/ImportDicomFiles.py)

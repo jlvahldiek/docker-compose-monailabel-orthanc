@@ -2,7 +2,8 @@ version: "3.9"
 services:
   reverse-proxy:
     build:
-      context: nginx
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
       - ${NGINX_LISTEN_PORT}:${NGINX_LISTEN_PORT}
     restart: unless-stopped
@@ -10,7 +11,8 @@ services:
       - .env
   orthanc:
     build:
-      context: orthanc
+      context: ./orthanc
+      dockerfile: Dockerfile
     command: /run/secrets/  # Path to the configuration files (stored as secrets)
     ports:
       - 4242:4242
@@ -27,7 +29,8 @@ services:
       - ${IMAGE_MOUNT}/db-index/:/var/lib/orthanc/db
   monailabel:
     build:
-      context: monailabel
+      context: ./monailabel
+      dockerfile: Dockerfile
     command: >
       monailabel start_server 
       --app /app/radiology 
@@ -46,5 +49,6 @@ services:
       - MONAI_LABEL_DICOMWEB_PASSWORD=${PW}
       - MONAI_LABEL_DICOMWEB_SEARCH_FILTER=${SEARCH_FILTER}
       - MONAI_LABEL_DICOMWEB_READ_TIMEOUT=60.0
+      - MONAI_LABEL_API_STR=/monailabel
     volumes:
       - ${LOCAL_WORKSPACE}/model/:/app/radiology/model/  # store models

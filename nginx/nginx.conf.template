@@ -1,16 +1,19 @@
-upstream orthanc {
-    server ${SERVICE_HOST}:8042;
-}
-
 server {
     listen       ${NGINX_LISTEN_PORT};
     server_name  ${SERVICE_HOST};
     client_max_body_size 64M;
 
-    location /orthanc {
-        proxy_pass http://orthanc/;
-        proxy_set_header HOST $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        rewrite /orthanc(.*) $1 break;
+    location  /orthanc/  {
+      proxy_pass http://${SERVICE_HOST}:8042;
+      proxy_set_header HOST $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      rewrite /orthanc(.*) $1 break;
+    }
+
+    location  /monailabel/  {
+      proxy_pass http://${SERVICE_HOST}:8000;
+      proxy_set_header HOST $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      rewrite /monailabel(.*) $1 break;
     }
 }

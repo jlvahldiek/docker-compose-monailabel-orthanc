@@ -4,16 +4,16 @@ services:
     extends:
       file: common.yml
       service: reverse-proxy
+    depends_on: [orthanc, monailabel]
   orthanc:
     extends:
       file: common.yml
       service: orthanc
-    depends_on: [reverse-proxy]
   monailabel:
     extends:
       file: common.yml
       service: monailabel
-    depends_on: [reverse-proxy, orthanc]
+    depends_on: [orthanc]
 secrets:
   orthanc.json:
     file: orthanc/orthanc.json

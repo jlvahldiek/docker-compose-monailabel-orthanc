@@ -33,7 +33,7 @@ docker-compose up
 ```
 - if no GPU available use
 ```bash
-docker-compose -f docker-compose-cpu.yml up 
+docker-compose -f docker-compose.cpu.yml up
 ```
 - Orthanc will be availabel via Web `http://$SERVICE_HOST:8042` or via DICOM QR `$SERVICE_HOST:4242`
   - populate Orthanc with images via Web app or using [batch upload](https://hg.orthanc-server.com/orthanc/file/Orthanc-1.11.1/OrthancServer/Resources/Samples/ImportDicomFiles/ImportDicomFiles.py)
@@ -46,7 +46,5 @@ docker-compose -f docker-compose-cpu.yml up
 First of all populate Orthanc with DICOM images. Make sure that you import DICOM images that are captured by `$SEARCH_FILTER` of .env file - otherwise MONAILabel will not recognize them.
 
 As an alternative specify paths to an existing Orthanc database: `$IMAGE_MOUNT` should point to Orthanc's data folder and `$LOCAL_WORKSPACE/db-index` should point to Orthanc's index folder.
-
-Put pre-existing models into `$LOCAL_WORKSPACE/anatomy-model`. This is also the place where new models will be saved.
 
 Use 3D Slicer's MONAILabel plugin to segment images and to train new models.

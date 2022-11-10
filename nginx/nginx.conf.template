@@ -16,4 +16,30 @@ server {
       proxy_set_header X-Real-IP $remote_addr;
       rewrite /monailabel(.*) $1 break;
     }
+    
+    location /orthanc/ {
+        proxy_http_version 1.1;
+        proxy_set_header Host               $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto  $scheme;
+
+        expires           0;
+        add_header        Cache-Control private;
+
+        proxy_pass        http://orthanc:8042/;
+    }
+
+    location /monailabel/ {
+        proxy_http_version 1.1;
+        proxy_set_header Host               $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto  $scheme;
+
+        expires           0;
+        add_header        Cache-Control private;
+
+        proxy_pass        http://monailabel:8000/;
+    }
 }
